@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Nowy Eksperyment</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet" />
+    <style>
+        body{
+            text-align: center;
+        }
+
+        form {
+            display: inline-block;
+        }
+        .input{
+            margin-left:2.5%;
+        }
+        #startDate{
+            margin-bottom: 2.5%;
+        }
+        #endDate{
+            margin-bottom: 2.5%;
+        }
+        #surfaceNum{
+            margin-bottom: 5%;
+        }
+        /*#spass{*/
+            /*margin-bottom: 5%;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" th:href="@{/}">Strona główna</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item nav-link" th:href="@{/results}">Wyniki</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item nav-link" th:href="@{/newexperiment}">Nowe Doświaczenie</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_USER')" class="nav-item nav-link" th:href="@{/sample}">Próbki z powierzchni</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_USER')" class="nav-item nav-link" th:href="@{/saveresults}">Zapisz wynik</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-item nav-link" th:href="@{/logout}">Wyloguj</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-item nav-link" th:href="@{/signin}">Zaloguj</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-item nav-link" th:href="@{/signup}">Zarejestruj</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<form action="#" method="post" th:action="@{/newexperiment}" th:object="${NewExperimentForm}">
+    <div class="input">
+        <div id = "startDate">
+            <p>Data ropoczęcia: <input type="date" th:field="*{startDate}"/> </p>
+            <p th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">startDate errors</p>
+        </div>
+        <div id = "endDate">
+            <p>Data zakończenia: <input type="date" th:field="*{endDate}"/></p>
+            <p th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">endDate errors</p>
+        </div>
+        <div class="surfaces" >
+            <div id="setup">
+                <p>Nazwa eksperymentu: <input type="text"  th:field="*{experimentName}"></p>
+                <p>Nazwa pierwszego nawozu: <input type="text" th:field="*{fertilizers[0]}"></p>
+                <p>Nazwa drugiego nawozu: <input type="text"  th:field="*{fertilizers[1]}"></p>
+                <p>Nazwa trzeciego nawozu: <input type="text"  th:field="*{fertilizers[2]}"></p>
+                <p>rozmiar: <input type="number"  th:field="*{size}"></p>
+                <p>zasiew: <input type="number"  th:field="*{seeding}"></p>
+            </div>
+            <div id="surfaceOne">
+                <h1>Powierzchnia pierwsza</h1>
+                <p>Nazwa rośliny: <input type="text"  th:field="*{plantNames[0]}"></p>
+            </div>
+            <div id="surfaceTwo">
+                <h1>Powierzchnia druga</h1>
+                <p>Nazwa rośliny: <input type="text"  th:field="*{plantNames[1]}"></p>
+            </div>
+            <div id="surfaceThree">
+                <h1>Powierzchnia trzecia</h1>
+                <p>Nazwa rośliny: <input type="text"  th:field="*{plantNames[2]}"></p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Rozpocznij"/>
+    </div>
+</form>
+</body>
+</html>

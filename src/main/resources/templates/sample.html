@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Próbki</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" th:href="@{/}">Strona główna</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item nav-link" th:href="@{/results}">Wyniki</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item nav-link" th:href="@{/newexperiment}">Nowe Doświaczenie</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_USER')" class="nav-item nav-link" th:href="@{/sample}">Próbki z powierzchni</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ROLE_USER')" class="nav-item nav-link" th:href="@{/saveresults}">Zapisz wynik</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-item nav-link" th:href="@{/logout}">Wyloguj</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-item nav-link" th:href="@{/signin}">Zaloguj</a>
+            </li>
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-item nav-link" th:href="@{/signup}">Zarejestruj</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div id="sampleTab">
+    <table border = "1">
+        <thead>
+            <tr>
+                <td>Nazwa eksperymentu</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="singleExperiment:${allExperiments}" th:object="${singleExperiment}">
+                <td th:text="*{experimentName}">Nazwa Ekpserymentu</td>
+                <td>
+                    <table border="1">
+                        <thead>
+                        <tr>
+                            <td>Nazwa pierwszego nawozu</td>
+                            <td>Nazwa drugiego nawozu</td>
+                            <td>Nazwa drugiego trzeciego</td>
+                        <tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="surface:${singleExperiment.surfaces}" th:object="${surface}">
+                            <td th:text="*{fertilizer1}">Nawozy 1</td>
+                            <td th:text="*{fertilizer2}">Nawozy 2</td>
+                            <td th:text="*{fertilizer3}">Nawozy 2</td>
+                            <td>
+                                <table border="1">
+                                    <thead>
+                                        <tr>
+                                            <td>Nazwy Roślin</td>
+                                            <td>Wynik</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="area:${surface.areas}" th:object="${area}">
+                                            <td th:text="*{plantName}"></td>
+                                            <td th:text="*{isGrow()}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </table>
+        </tr>
+    </tbody>
+</div>
+</body>
+</html>
