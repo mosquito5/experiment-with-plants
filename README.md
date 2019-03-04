@@ -19,3 +19,4 @@ All data is kept in database. The database works on MySQL engine.
     -WebMvC
  * Thymeleaf
  * MySQL
+ * Bootstrap
